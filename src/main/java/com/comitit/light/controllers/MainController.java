@@ -11,19 +11,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController(value = "/api/")
+@RestController
 public class MainController {
     @Autowired
     ApiService apiService;
 
-    @GetMapping("getAll")
-    public ResponseEntity<List<LightEntity>> getAll(){
-        return new ResponseEntity<List<LightEntity>>(apiService.getAllValues(),new HttpHeaders(), HttpStatus.OK);
+    @GetMapping("/getAll")
+    public List<LightEntity> getAll(){
+//        return new ResponseEntity<List<LightEntity>>(apiService.getAllValues(),new HttpHeaders(), HttpStatus.OK);
+        return apiService.getAllValues();
+    }
+    @GetMapping("/getdemo")
+    public String getdemo(){
+//        return new ResponseEntity<List<LightEntity>>(apiService.getAllValues(),new HttpHeaders(), HttpStatus.OK);
+        return "tushar";
     }
 
-    @PostMapping("insert/")
+    @PostMapping("/insert")
     public String insert(@RequestBody LightEntity lightEntity){
 
-        return "Success!";
+        return apiService.insertData(lightEntity);
     }
 }

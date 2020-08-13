@@ -15,16 +15,21 @@ public class ApiService {
     @Autowired
     LightInfoRepo lightInfoRepo;
 
-    public List<LightEntity> getAllValues(){
+    public List<LightEntity> getAllValues() {
         return lightRepo.findAll();
     }
-    public String insertData(LightEntity lightEntity){
-        LightEntity newLightEntity = new LightEntity();
-        if(lightEntity.getLightInfo().getLightDBIdentity().getLightNo() != null){
-
-        }else{
-
+    
+    public String insertData(LightEntity lightEntity) {
+        Integer dbNo = lightEntity.getLightInfo().getLightDBIdentity().getDbNo();
+        Integer lightno = lightEntity.getLightInfo().getLightDBIdentity().getLightNo();
+        boolean isTurnedOn = lightEntity.isTurnedOn();
+        if (lightRepo.findByLightInfo(lightEntity.getLightInfo()) != null) {
+            lightRepo.updateIsOn(isTurnedOn, dbNo, lightno);
+            return "updated";
+        } else {
+            lightRepo.save(lightEntity);
+            return "Created";
         }
-        return "xyz";
+//
     }
 }
