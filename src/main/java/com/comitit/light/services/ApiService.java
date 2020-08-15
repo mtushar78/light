@@ -27,8 +27,16 @@ public class ApiService {
             lightRepo.updateIsOn(isTurnedOn, dbNo, lightno);
             return "updated";
         } else {
-            lightRepo.save(lightEntity);
-            return "Created";
+            Integer isLightInfoExists = lightInfoRepo.ifLightInfoExists(dbNo,lightno);
+            if(isLightInfoExists == 0){
+                lightInfoRepo.save(lightEntity.getLightInfo());
+                lightRepo.save(lightEntity);
+                return "LightInfo Saved then Entry Created!";
+            }
+            else{
+                lightRepo.save(lightEntity);
+                return "Created";
+            }
         }
 //
     }
